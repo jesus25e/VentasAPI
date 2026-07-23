@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Inventory.Domain.Entities
 {
-    internal class Sale:BaseEntity
+    public class Sale:BaseEntity
     {
         public decimal Total { get; private set; }
         public DateTime SaleDate { get; private set; }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Inventory.Domain.Entities
 {
-    internal class Customer:BaseEntity
+    public class Customer:BaseEntity
     {
         public string FullName { get; private set; }
         public string Email { get; private set; }

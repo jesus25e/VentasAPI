@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Inventory.Domain.Entities
 {
-    internal class Product : BaseEntity
+    public class Product : BaseEntity
     {
         public string Name { get; private set; }
         public string Description { get; private set; }

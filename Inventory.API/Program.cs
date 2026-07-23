@@ -1,17 +1,21 @@
+using Inventory.API.Middlewares;
+using Inventory.Application;
 using Inventory.Infrastructure.Extensions;
 using Inventory.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AppAplication();
 builder.Services.AddInfrastructure(builder.Configuration);
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.UseGlobalExceptionMiddleware();
+
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();

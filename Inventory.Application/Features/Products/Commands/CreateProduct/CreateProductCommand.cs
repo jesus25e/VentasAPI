@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Inventory.Shared.Result;
 using MediatR;
 
 namespace Inventory.Application.Features.Products.Commands.CreateProduct
@@ -13,5 +14,5 @@ namespace Inventory.Application.Features.Products.Commands.CreateProduct
         int Stock,
         int CategoryId,
         int SupplierId
-    ):IRequest<int>;
+    ):IRequest<Result<int>>;
 }

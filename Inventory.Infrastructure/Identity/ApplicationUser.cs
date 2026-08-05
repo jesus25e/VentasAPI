@@ -1,0 +1,20 @@
+﻿using Inventory.Domain.Common;
+using Inventory.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Inventory.Infrastructure.Identity
+{
+    public class ApplicationUser: IdentityUser
+    {
+        public string? Id { get; set; }
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+        public bool IsActive { get; set; } = true;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public ICollection<RefreshToken> RefreshTokens = new List<RefreshToken>();
+    }
+}

@@ -23,12 +23,7 @@ namespace Inventory.Infrastructure.Repositories
             await _dbSet.AddAsync(entity);
         }
 
-        public async Task<IReadOnlyCollection<T>> GetAllAsync()
-        {
-            return await _dbSet.ToListAsync();
-        }
-
-        public async Task<T?> GetByIdAsyncs(int id)
+        public async Task<T?> GetByIdAsync(int id)
         {
             return await _dbSet.FindAsync(id);
         }
@@ -41,6 +36,11 @@ namespace Inventory.Infrastructure.Repositories
         public void Delete(T entity)
         {
             _dbSet.Remove(entity);
+        }
+
+        public IQueryable<T> AsQueryable()
+        {
+            return _dbSet.AsQueryable();
         }
     }
 }

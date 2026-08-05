@@ -12,17 +12,18 @@ namespace Inventory.Application
     public static class DependencyInjection
     {
         public static IServiceCollection AppAplication(
-            this IServiceCollection services )
+            this IServiceCollection services)
         {
             services.AddMediatR(cfg =>
             {
                 cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+                cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
             });
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            services.AddTransient(typeof(IPipelineBehavior<,>),typeof(ValidationBehavior<,>));
-
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            
             return services;
         }
     }

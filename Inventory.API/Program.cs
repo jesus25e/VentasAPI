@@ -1,27 +1,86 @@
 using Inventory.API.Middlewares;
 using Inventory.Application;
-using Inventory.Infrastructure.Extensions;
+using Inventory.Application.Common.Authorization;
+using Inventory.Infrastructure;
+using Inventory.Infrastructure.Identity.Seed;
 using Inventory.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AppAplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
-builder.Services.AddOpenApi();
+//builder.Services.AddOpenApi();
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Inventory API",
+        Version = "v1"
+    });
+
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "Ingrese el token JWT. Ejemplo: Bearer {token}",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT"
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new List<string>()
+        }
+    });
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(Policies.AdminOnly,
+        policy => policy.RequireRole(Roles.Admin));
+
+    options.AddPolicy(
+        Policies.ManagerOnly,
+        policy => policy.RequireRole(Roles.Admin,Roles.Manager));
+
+    options.AddPolicy(
+        Policies.EmployeeOnly,
+        policy => policy.RequireRole(Roles.Admin,Roles.Manager,Roles.Employee));
+});
+
 
 var app = builder.Build();
 
-app.UseGlobalExceptionMiddleware();
+await IdentitySeeder.SeedAsync(app.Services);
 
+app.UseGlobalExceptionMiddleware();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers();
 
 var summaries = new[]
 {

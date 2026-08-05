@@ -7,18 +7,18 @@ namespace Inventory.Domain.Entities
     public class BaseEntity
     {
         public int Id { get; protected set; }
-        public DateTime CreatedAt { get; protected set; } = DateTime.Now;
+        public DateTime CreatedAt { get; protected set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; protected set; }
-        public bool isDeleted { get; protected set; } = false;
+        public bool IsDeleted { get; protected set; } = false;
         public void MarkAsUpdated()
         {
-            UpdatedAt = DateTime.Now;
+            UpdatedAt = DateTime.UtcNow;
         }
 
         public void Deleted()
         {
-            isDeleted = true;
-            UpdatedAt = DateTime.Now;
+            IsDeleted = true;
+            UpdatedAt = DateTime.UtcNow;
         }
     }
 }

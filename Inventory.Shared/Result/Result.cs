@@ -4,22 +4,23 @@ using System.Text;
 
 namespace Inventory.Shared.Result
 {
-    public class Result<T>
+    public class Result<T>:Results
     {
-        public bool IsSuccess { get; }
-        public string Error { get; }
         public T? Value { get; }
-        private Result( bool success,T? value, string error)
+
+        protected Result(
+            T? value,
+            bool isSuccess,
+            string error)
+            : base(isSuccess, error)
         {
-            IsSuccess = success;
             Value = value;
-            Error = error;
         }
 
         public static Result<T> Success(T value)
-            => new(true, value, string.Empty);
+            => new(value, true, string.Empty);
 
-        public static Result<T> Failure(string error)
-            => new(false, default, error);
+        public new static Result<T> Failure(string error)
+            => new(default, false, error);
     }
 }

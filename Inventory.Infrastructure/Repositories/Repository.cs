@@ -1,4 +1,5 @@
 ﻿using Inventory.Application.Interfaces.Repositories;
+using Inventory.Domain.Common;
 using Inventory.Domain.Entities;
 using Inventory.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,7 @@ using System.Text;
 
 namespace Inventory.Infrastructure.Repositories
 {
-    public class Repository<T> : IRepository<T> where T : BaseEntity
+    public class Repository<T> : IRepository<T> where T : TenantEntity
     {
         protected readonly ApplicationDbContext _context;
         protected readonly DbSet<T> _dbSet;
@@ -30,7 +31,7 @@ namespace Inventory.Infrastructure.Repositories
 
         public void Update(T entity)
         {
-            _dbSet.Update(entity);
+             _dbSet.Update(entity);
         }
 
         public void Delete(T entity)

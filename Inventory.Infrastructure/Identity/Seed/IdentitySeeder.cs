@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Inventory.Domain.Common;
+using Inventory.Infrastructure.Persistence;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -25,8 +28,7 @@ namespace Inventory.Infrastructure.Identity.Seed
                         UserManager<ApplicationUser>>();
 
             await SeedRoles(roleManager);
-
-            await SeedAdmin(userManager);
+            await SeedAdmin(userManager, scope.ServiceProvider.GetRequiredService<ApplicationDbContext>());
         }
 
         private static async Task SeedRoles(
@@ -50,8 +52,17 @@ namespace Inventory.Infrastructure.Identity.Seed
         }
 
         private static async Task SeedAdmin(
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            ApplicationDbContext context)
         {
+            var tenant = await context.Tenants.Where(t => t.Name == "Default Tenant").FirstOrDefaultAsync();
+            if (tenant == null)
+            {
+                tenant = new Tenant { Id = Guid.NewGuid().ToString(), Name = "Default Tenant" };
+                context.Tenants.Add(tenant);
+                await context.SaveChangesAsync();
+            }
+
             const string email =
                 "admin@inventory.com";
 
@@ -71,7 +82,10 @@ namespace Inventory.Infrastructure.Identity.Seed
 
                 LastName = "Administrator",
 
+                TenantId = tenant.Id,
+
                 EmailConfirmed = true
+          
             };
 
             var result =

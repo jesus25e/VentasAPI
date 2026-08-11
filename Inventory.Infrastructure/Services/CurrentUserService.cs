@@ -19,6 +19,10 @@ namespace Inventory.Infrastructure.Services
             .User
             .FindFirstValue(ClaimTypes.NameIdentifier);
 
+        public string TenantId => _httpContextAccessor.HttpContext?
+            .User
+            .FindFirst("TenantId")?.Value ?? string.Empty;
+
         public string? Email => _httpContextAccessor.HttpContext?
             .User
             .FindFirstValue(ClaimTypes.Email);

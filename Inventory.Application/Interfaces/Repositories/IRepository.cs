@@ -1,11 +1,12 @@
-﻿using Inventory.Domain.Entities;
+﻿using Inventory.Domain.Common;
+using Inventory.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Inventory.Application.Interfaces.Repositories
 {
-    public interface IRepository<T> where T:BaseEntity
+    public interface IRepository<T> where T: TenantEntity
     {
         Task<T?> GetByIdAsync(int id);
         IQueryable<T> AsQueryable();

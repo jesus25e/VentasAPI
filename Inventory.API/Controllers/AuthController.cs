@@ -72,7 +72,7 @@ namespace Inventory.API.Controllers
         {
             return Ok(new
             {
-                currentUser.UserId,
+                currentUser.TenantId,
                 currentUser.Email,
                 currentUser.Roles,
                 currentUser.IsAuthenticated

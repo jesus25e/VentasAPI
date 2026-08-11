@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Inventory.Domain.Entities
 {
-    public class Product : BaseEntity
+    public class Product : TenantEntity
     {
         public string Name { get; private set; }
         public string? Description { get; private set; }
@@ -26,8 +26,8 @@ namespace Inventory.Domain.Entities
             decimal price,
             int stock,
             int categoryId,
-        int supplierId
-        )
+            int supplierId
+            )
         {
             Name = name;
             Description = description;
@@ -52,5 +52,7 @@ namespace Inventory.Domain.Entities
             Stock = stock;
             CategoryId = categoryId;
         }
+
+
     }
 }

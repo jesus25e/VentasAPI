@@ -26,6 +26,7 @@ namespace Inventory.Infrastructure.Services
             {
                 new(JwtRegisteredClaimNames.Sub,user.Id),
                 new(JwtRegisteredClaimNames.Email,user.Email),
+                new("TenantId", user.TenantId),
                 new(ClaimTypes.Name,user.FirstName),
                 new(ClaimTypes.Surname,user.LastName)
             };

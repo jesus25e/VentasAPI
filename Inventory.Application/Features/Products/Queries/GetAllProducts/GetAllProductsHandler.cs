@@ -1,42 +1,49 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Inventory.Application.Common.Models;
 using Inventory.Application.DTOs.Product;
 using Inventory.Application.Interfaces.Repositories;
+using Inventory.Domain.Entities;
 using Inventory.Shared.Result;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Inventory.Application.Features.Products.Queries.GetAllProducts
 {
-    //public class GetAllProductsHandler : IRequestHandler<GetAllProductsQuery, Result<PagedResult<ProductDto>>>
-    //{
-    //    private readonly IProductRepository _repository;
-    //    private readonly IMapper _mapper;
+    public class GetAllProductsHandler : IRequestHandler<GetAllProductsQuery, Result<PagedResult<ProductDto>>>
+    {
+        private readonly IProductRepository _repository;
+        private readonly IMapper _mapper;
 
-    //    public GetAllProductsHandler(IProductRepository repository,IMapper mapper)
-    //    {
-    //        _repository = repository;
-    //        _mapper = mapper;
-    //    }
+        public GetAllProductsHandler(IProductRepository repository, IMapper mapper)
+        {
+            _repository = repository;
+            _mapper = mapper;
+        }
 
-    //    //public async Task<Result<PagedResult<ProductDto>>> Handle(
-    //    //    GetAllProductsQuery request,
-    //    //    CancellationToken cancellationToken)
-    //    //{
-    //    //    //var products = await _repository.AsQueryable();
+        public async Task<Result<PagedResult<ProductDto>>> Handle(
+            GetAllProductsQuery request,
+            CancellationToken cancellationToken)
+        {
+            var filter = new ProductFilter{
+                Search = request.Search,
+                CategoryId = request.CategoryId,
+                SupplierId = request.SupplierId,
+                MinPrice = request.MinPrice,
+                MaxPrice = request.MaxPrice,
+                MinStock = request.MinStock,
+                MaxStock = request.MaxStock,
+                SortBy = request.SortBy,
+                Descending = request.Descending,
+                Page = request.Page,
+                PageSize = request.PageSize
+            };
 
-    //    //    //return product.Select(x => new ProductDto
-    //    //    //{
-    //    //    //    Id = x.Id,
-    //    //    //    Name = x.Name,
-    //    //    //    Description = x.Description,
-    //    //    //    Price = x.Price,
-    //    //    //    Stock = x.Stock,
-    //    //    //}).ToList();
+            var result = await _repository.GetPagedAsync(
+                filter,
+                cancellationToken);
 
-    //    //    //return _mapper.Map<List<ProductDto>>(products);
-    //    //}
-    //}
+            return Result<PagedResult<ProductDto>>
+                .Success(result);
+        }
+    }
 }

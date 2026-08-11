@@ -15,6 +15,18 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 //builder.Services.AddOpenApi();
 builder.Services.AddControllers();
+
+builder.Services.AddCors( options =>
+{
+    options.AddPolicy("FlutterPolicy", policy =>
+    {
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -67,7 +79,7 @@ builder.Services.AddAuthorization(options =>
 
 var app = builder.Build();
 
-await IdentitySeeder.SeedAsync(app.Services);
+//await IdentitySeeder.SeedAsync(app.Services);
 
 app.UseGlobalExceptionMiddleware();
 
@@ -78,8 +90,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("FlutterPolicy");
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 
 var summaries = new[]

@@ -91,6 +91,7 @@ namespace Inventory.Infrastructure.Services
                 Email = user.Email!,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
+                TenantId = user.TenantId,
                 Roles = await _userManager.GetRolesAsync(user)
             };
 

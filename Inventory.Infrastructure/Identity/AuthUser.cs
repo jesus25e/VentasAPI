@@ -10,6 +10,8 @@ namespace Inventory.Infrastructure.Identity
         public string Email { get; init; } = string.Empty;
         public string FirstName { get; init; } = string.Empty;
         public string LastName { get; init; } = string.Empty;
+        public string TennantId { get; init; } = string.Empty;
         public IList<string> Roles { get; init; } = new List<string>();
+        public string? TenantId { get; internal set; }
     }
 }

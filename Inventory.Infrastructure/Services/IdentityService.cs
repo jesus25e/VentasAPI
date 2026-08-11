@@ -64,6 +64,7 @@ namespace Inventory.Infrastructure.Services
                 Email = user.Email!,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
+                TenantId = user.TenantId,
                 Roles = roles.ToList(),
             };
 
@@ -78,10 +79,8 @@ namespace Inventory.Infrastructure.Services
                 CreatedAt = DateTime.UtcNow,
                 ExpiresAt = _refreshTokenService.GetExpirationDate(),
                 UserId = user.Id,
+               
             };
-
-            user.RefreshTokens.Add(refreshTokenEntity);
-            await _userManager.UpdateAsync(user);
 
             await _context.RefreshTokens.AddAsync(refreshTokenEntity);
             await _context.SaveChangesAsync();

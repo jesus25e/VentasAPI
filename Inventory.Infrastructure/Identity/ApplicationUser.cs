@@ -9,7 +9,8 @@ namespace Inventory.Infrastructure.Identity
 {
     public class ApplicationUser: IdentityUser
     {
-        public string? Id { get; set; }
+        public string TenantId { get; set; } = string.Empty;
+        public Tenant Tenant { get; set; } = default!;
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public bool IsActive { get; set; } = true;

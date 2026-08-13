@@ -25,7 +25,7 @@ namespace Inventory.Application.Features.Products.Commands.DeleteProduct
         {
             var product = await _productRepository.GetByIdAsync(request.Id);
 
-            if (product == null)
+            if (product is null)
             {
                 return Result<bool>.Failure($"El producto con ID {request.Id} no fue encontrado.");
             }

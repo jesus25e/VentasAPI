@@ -1,8 +1,7 @@
-﻿using Inventory.Application.Features.Products.Commands.CreateProduct;
-using Inventory.Application.Features.Products.Commands.DeleteProduct;
-using Inventory.Application.Features.Products.Commands.UpdateProduct;
-using Inventory.Application.Features.Products.Queries.GetAllProducts;
-using Inventory.Application.Features.Products.Queries.GetProductById;
+﻿using Inventory.Application.Features.Categories.Commands.CreateCategory;
+using Inventory.Application.Features.Categories.Commands.DeleteCategory;
+using Inventory.Application.Features.Categories.Commands.UpdateCategory;
+using Inventory.Application.Features.Categories.Queries.GetCategoryById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,28 +11,16 @@ namespace Inventory.API.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
-    public class ProductController : Controller
+    public class CategoryController : Controller
     {
-        private readonly IMediator _mediator;
-
-        public ProductController(IMediator mediator)
+        public readonly IMediator _mediator;
+        public CategoryController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] GetAllProductsQuery query)
-        {
-            var result = await _mediator.Send(query);
-
-            if (!result.IsSuccess) return BadRequest(result);
-
-            return Ok(result);
-        }
-
         [HttpPost]
-        public async Task<IActionResult> Create(
-            CreateProductCommand command)
+        public async Task<IActionResult> Create(CreateCategoryCommand command)
         {
             var result = await _mediator.Send(command);
 
@@ -46,7 +33,7 @@ namespace Inventory.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var query = new GetProductByIdQuery(id);
+            var query = new GetCategoryByIdQuery(id);
             var result = await _mediator.Send(query);
 
             if (!result.IsSuccess) return NotFound(result);
@@ -55,11 +42,11 @@ namespace Inventory.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, UpdateProductCommand command)
+        public async Task<IActionResult> Update(int id, UpdateCategoryCommand command)
         {
             if (id != command.Id)
             {
-                return BadRequest("El Id no coincide con los productos.");
+                return BadRequest("El Id no coincide con alguna categoría.");
             }
 
             var result = await _mediator.Send(command);
@@ -72,10 +59,10 @@ namespace Inventory.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var command = new DeleteProductCommand(id, true);
+            var command = new DeleteCategoryCommand(id, true);
             var result = await _mediator.Send(command);
             if (!result.IsSuccess) return NotFound(result);
-            return Ok(result);
+            return NoContent();
         }
     }
 }

@@ -38,6 +38,11 @@ namespace Inventory.Infrastructure.Persistence
                     !x.IsDeleted &&
                     x.TenantId == _currentUserService.TenantId);
 
+            modelBuilder.Entity<Category>()
+                .HasQueryFilter(x =>
+                    !x.IsDeleted &&
+                    x.TenantId == _currentUserService.TenantId);
+
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
 

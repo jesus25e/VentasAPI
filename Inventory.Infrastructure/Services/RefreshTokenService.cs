@@ -8,14 +8,12 @@ namespace Inventory.Infrastructure.Services
 {
     public class RefreshTokenService : IRefreshTokenService
     {
-
         public Task<string> GenerateRefreshTokenAsync()
         {
             var bytes = RandomNumberGenerator.GetBytes(64);
 
             return Task.FromResult(Convert.ToBase64String(bytes));
         }
-
         public DateTime GetExpirationDate()
         {
             return DateTime.UtcNow.AddDays(7);
@@ -27,6 +25,5 @@ namespace Inventory.Infrastructure.Services
 
             return Convert.ToHexString(bytes);
         }
-
     }
 }

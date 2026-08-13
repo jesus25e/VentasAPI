@@ -67,8 +67,9 @@ namespace Inventory.Infrastructure.Services
                 return Result<LoginResponse>.Failure("Usuario no encontrado.");
             }
 
+            storedToken.RevockedAt = DateTime.UtcNow;
+            
             var newRefreshToken = await _refreshTokenService.GenerateRefreshTokenAsync();
-
             var refreshExpiration = _refreshTokenService.GetExpirationDate();
 
             var refreshTokenEntity = new RefreshToken
@@ -80,10 +81,7 @@ namespace Inventory.Infrastructure.Services
                 UserId = user.Id
             };
 
-            storedToken.RevockedAt = DateTime.UtcNow;
-            _context.RefreshTokens.Update(storedToken);
-
-            user.RefreshTokens.Add(refreshTokenEntity);
+            await _context.AddAsync(refreshTokenEntity);
 
             var authUser = new AuthUser
             {
@@ -96,12 +94,12 @@ namespace Inventory.Infrastructure.Services
             };
 
             var accessToken = await _jwtTokenService.GenerateAccessTokenAsync(authUser);
-
-            storedToken.RevockedAt = DateTime.UtcNow;
-
-            await _userManager.UpdateAsync(user);
-            await _context.AddAsync(refreshTokenEntity);
+            
             await _context.SaveChangesAsync();
+
+            //_context.RefreshTokens.Update(storedToken);
+            //user.RefreshTokens.Add(refreshTokenEntity);
+            //await _userManager.UpdateAsync(user);
 
             return Result<LoginResponse>.Success(new LoginResponse(
                     user.Id,

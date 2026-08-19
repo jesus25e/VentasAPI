@@ -40,6 +40,7 @@ namespace Inventory.Infrastructure
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<ISupplierRepository, SupplierRepository>();
+            services.AddScoped<ICustomerRepository, CustomerRespository>();
 
             services.AddIdentity<ApplicationUser, IdentityRole>( options =>
             {

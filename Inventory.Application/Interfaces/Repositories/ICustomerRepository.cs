@@ -11,6 +11,6 @@ namespace Inventory.Application.Interfaces.Repositories
     {
         Task<Customer?> GetByDniAsync(int dni, CancellationToken cancellationToken);
 
-        Task<PagedResult<CustomerDto>> GetPagedAsync(CustomerFilter filter,CancellationToken cancellationToken)
+        Task<PagedResult<CustomerDto>> GetPagedAsync(CustomerFilter filter, CancellationToken cancellationToken);
     }
 }

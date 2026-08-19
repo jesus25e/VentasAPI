@@ -39,6 +39,7 @@ namespace Inventory.Infrastructure
             services.AddScoped<IRefreshTokenService, RefreshTokenService>();
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<ISupplierRepository, SupplierRepository>();
 
             services.AddIdentity<ApplicationUser, IdentityRole>( options =>
             {

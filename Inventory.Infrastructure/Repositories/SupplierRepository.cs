@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Inventory.Application.Common.Models;
-using Inventory.Application.DTOs.Category;
+using Inventory.Application.DTOs.Supplier;
 using Inventory.Application.Interfaces.Repositories;
 using Inventory.Domain.Entities;
 using Inventory.Infrastructure.Persistence;
@@ -13,45 +13,42 @@ using System.Text;
 
 namespace Inventory.Infrastructure.Repositories
 {
-    public class CategoryRepository : Repository<Category>, ICategoryRepository
+    public class SupplierRepository : Repository<Supplier>, ISupplierRepository
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
 
-        public CategoryRepository(ApplicationDbContext context, IMapper mapper) : base(context)
+        public SupplierRepository(ApplicationDbContext context, IMapper mapper) : base(context)
         {
             _context = context;
-            _mapper = mapper;
+            _mapper= mapper;
         }
 
-        public async Task<Category?> GetByNameAsync(string name, CancellationToken cancellationToken = default)
+        public async Task<PagedResult<SupplierDto>> GetPagedAsync(SupplierFilter filter, CancellationToken cancellationToken)
         {
-            return await _context.Categories.FirstOrDefaultAsync(c => c.Name == name, cancellationToken);
-        }
-
-        public async Task<PagedResult<CategoryDto>> GetPagedAsync(CategoryFilter filter, CancellationToken cancellationToken)
-        {
-            var query = _context.Categories.AsQueryable();
+            var query = _context.Suppliers.AsQueryable();
 
             if (!string.IsNullOrEmpty(filter.Search))
             {
-                query = query.Where(c => c.Name.Contains(filter.Search) || c.Description.Contains(filter.Search));
+                query = query.Where(c => c.Name.Contains(filter.Search) || c.CompanyName.Contains(filter.Search));
             }
-            if (!string.IsNullOrEmpty(filter.Name))
-            {
-                query = query.Where(c => c.Name == filter.Name);
+            if (!string.IsNullOrEmpty(filter.Name)) {
+                query = query.Where(c => c.Name.Contains(filter.Name));
             }
-            if (!string.IsNullOrEmpty(filter.Description))
+            if (!string.IsNullOrEmpty(filter.CompanyName))
             {
-                query = query.Where(c => c.Description == filter.Description);
+                query = query.Where(c => c.CompanyName.Contains(filter.CompanyName));
+            }
+            if (!string.IsNullOrEmpty(filter.Address))
+            {
+                query = query.Where(c => c.Address.Contains(filter.Address));
             }
             if (!string.IsNullOrEmpty(filter.SortBy))
             {
                 if (filter.Descending)
                 {
                     query = query.OrderByDescending(c => EF.Property<object>(c, filter.SortBy));
-                }
-                else
+                } else
                 {
                     query = query.OrderBy(c => EF.Property<object>(c, filter.SortBy));
                 }
@@ -60,13 +57,13 @@ namespace Inventory.Infrastructure.Repositories
             query = filter.SortBy.ToLower() switch
             {
                 "name" => filter.Descending ? query.OrderByDescending(c => c.Name) : query.OrderBy(c => c.Name),
-                "description" => filter.Descending ? query.OrderByDescending(c => c.Description) : query.OrderBy(c => c.Description),
+                "companyName" => filter.Descending ? query.OrderByDescending(c => c.CompanyName) : query.OrderBy(c => c.CompanyName),
                 _ => filter.Descending ? query.OrderByDescending(c => c.Name) : query.OrderBy(c => c.Name)
             };
 
-            var categories = query.ProjectTo<CategoryDto>(_mapper.ConfigurationProvider);
+            var supplier = query.ProjectTo<SupplierDto>(_mapper.ConfigurationProvider);
 
-            return await categories.ToPageResultAsync(filter, cancellationToken);
+            return await supplier.ToPageResultAsync(filter, cancellationToken);
         }
     }
 }

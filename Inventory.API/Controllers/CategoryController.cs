@@ -1,9 +1,11 @@
 ﻿using Inventory.Application.Features.Categories.Commands.CreateCategory;
 using Inventory.Application.Features.Categories.Commands.DeleteCategory;
 using Inventory.Application.Features.Categories.Commands.UpdateCategory;
+using Inventory.Application.Features.Categories.Queries.GetAllCategories;
 using Inventory.Application.Features.Categories.Queries.GetCategoryById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inventory.API.Controllers
@@ -17,6 +19,14 @@ namespace Inventory.API.Controllers
         public CategoryController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] GetAllCategoriesQuery query)
+        {
+            var result = await _mediator.Send(query);
+            if (!result.IsSuccess) return BadRequest(result);
+            return Ok(result);
         }
 
         [HttpPost]

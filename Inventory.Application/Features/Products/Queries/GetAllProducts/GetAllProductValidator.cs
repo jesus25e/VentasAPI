@@ -47,7 +47,7 @@ namespace Inventory.Application.Features.Products.Queries.GetAllProducts
 
             RuleFor(x => x.SortBy)
                 .Must(BeValidSortField)
-                .WithMessage("SotBy debe ser: name, price, stock o createdAt.");
+                .WithMessage("SotBy debe ser: Nombre, Precio, Stock o Fecha de Creación.");
         }
 
         private static bool BeValidSortField(string sortBy)

@@ -1,6 +1,0 @@
-﻿namespace Inventory.Shared;
-
-public class Class1
-{
-
-}

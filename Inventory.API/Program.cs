@@ -18,10 +18,10 @@ builder.Services.AddControllers();
 
 builder.Services.AddCors( options =>
 {
-    options.AddPolicy("FlutterPolicy", policy =>
+    options.AddPolicy("AllowFronted", policy =>
     {
         policy
-            .AllowAnyOrigin()
+            .WithOrigins("http://localhost:5173")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -91,7 +91,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("FlutterPolicy");
+app.UseCors("AllowFronted");
 
 app.UseAuthentication();
 app.UseAuthorization();

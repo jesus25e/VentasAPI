@@ -7,7 +7,7 @@ namespace Inventory.Domain.Entities
 {
     public class Supplier:TenantEntity
     {
-        public string Name { get; private set; }
+        public string Name { get; private set; } = string.Empty;
         public string? CompanyName { get; private set; }
         public string Phone { get; private set; }
         public string? Address { get; private set; }

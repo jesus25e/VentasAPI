@@ -13,10 +13,10 @@ namespace Inventory.Application.Features.Supplier.Queries.GetAllSupplier
         public string? Search { get; set; }
         public string? Name { get; set; }
         public string? CompanyName { get; set; }
-        public int Phone { get; set; }
-        public bool Descending { get; set; }
+        public int? Phone { get; set; }
         public string? Address { get; set; }
         public string SortBy { get; set; } = "name";
+        public bool Descending { get; set; }
         
     }
 }

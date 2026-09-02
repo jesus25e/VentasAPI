@@ -6,23 +6,28 @@ using System.Text;
 
 namespace Inventory.Application.Features.Supplier.Queries.GetAllSupplier
 {
-    public class GetAllSupplierValidator: AbstractValidator<SupplierDto>
+    public class GetAllSupplierValidator: AbstractValidator<GetAllSupplierQuery>
     {
         public GetAllSupplierValidator()
         {
-            RuleFor(x => x.Name)
-                .NotEmpty().WithMessage("El nombre del proveedor es obligatorio")
-                .MaximumLength(100).WithMessage("El nombre del proveedor no puede exceder los 100 caracteres");
+            RuleFor(x => x.Page)
+                .GreaterThanOrEqualTo(1);
 
-            RuleFor(x => x.CompanyName)
-                .MaximumLength(100).WithMessage("El nombre de la empresa no puede exceder los 100 caracteres");
+            RuleFor(x => x.PageSize)
+                .InclusiveBetween(1, 100);
 
-            RuleFor(x => x.Phone)
-                .NotEmpty().WithMessage("El teléfono del proveedor es obligatorio")
-                .Matches(@"^\d{9}$").WithMessage("El teléfono del proveedor debe tener 9 dígitos");
-
-            RuleFor(x => x.Address)
-                .MaximumLength(200).WithMessage("La dirección del proveedor no puede exceder los 200 caracteres");
+            RuleFor(x => x.SortBy)
+                .Must(BeValidSortField)
+                .WithMessage("SortBy debe ser: Nombre o Fecha de Creación");
+        }
+        private static bool BeValidSortField(string sortBy)
+        {
+            return sortBy.ToLower() switch
+            {
+                "name" => true,
+                "companyName" => true,
+                _ => false
+            };
         }
     }
 }

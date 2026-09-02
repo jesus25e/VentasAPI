@@ -30,35 +30,40 @@ namespace Inventory.Infrastructure.Repositories
 
             if (!string.IsNullOrEmpty(filter.Search))
             {
-                query = query.Where(c => c.Name.Contains(filter.Search) || c.CompanyName.Contains(filter.Search));
+                query = query.Where(c =>
+                    c.Name.Contains(filter.Search) ||
+                    c.CompanyName.Contains(filter.Search));
             }
-            if (!string.IsNullOrEmpty(filter.Name)) {
+
+            if (!string.IsNullOrEmpty(filter.Name))
+            {
                 query = query.Where(c => c.Name.Contains(filter.Name));
             }
+
             if (!string.IsNullOrEmpty(filter.CompanyName))
             {
                 query = query.Where(c => c.CompanyName.Contains(filter.CompanyName));
             }
+
             if (!string.IsNullOrEmpty(filter.Address))
             {
                 query = query.Where(c => c.Address.Contains(filter.Address));
             }
-            if (!string.IsNullOrEmpty(filter.SortBy))
-            {
-                if (filter.Descending)
-                {
-                    query = query.OrderByDescending(c => EF.Property<object>(c, filter.SortBy));
-                } else
-                {
-                    query = query.OrderBy(c => EF.Property<object>(c, filter.SortBy));
-                }
-            }
 
             query = filter.SortBy.ToLower() switch
             {
-                "name" => filter.Descending ? query.OrderByDescending(c => c.Name) : query.OrderBy(c => c.Name),
-                "companyName" => filter.Descending ? query.OrderByDescending(c => c.CompanyName) : query.OrderBy(c => c.CompanyName),
-                _ => filter.Descending ? query.OrderByDescending(c => c.Name) : query.OrderBy(c => c.Name)
+                "name" => filter.Descending
+                    ? query.OrderByDescending(c => c.Name)
+                    : query.OrderBy(c => c.Name),
+
+                "companyname" => filter.Descending
+                    ? query.OrderByDescending(c => c.CompanyName)
+                    : query.OrderBy(c => c.CompanyName),
+
+
+                _ => filter.Descending
+                    ? query.OrderByDescending(c => c.Name)
+                    : query.OrderBy(c => c.Name)
             };
 
             var supplier = query.ProjectTo<SupplierDto>(_mapper.ConfigurationProvider);

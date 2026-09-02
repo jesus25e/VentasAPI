@@ -12,6 +12,7 @@ namespace Inventory.Application.Features.Products.Commands.CreateProduct
         string Description,
         decimal Price,
         int Stock,
+        int StockMin,
         int CategoryId,
         int SupplierId
     ):IRequest<Result<int>>;

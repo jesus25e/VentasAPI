@@ -11,10 +11,9 @@ namespace Inventory.Domain.Entities
         public string? Description { get; private set; }
         public decimal Price { get; private set; }
         public int Stock { get; private set; }
+        public int StockMin { get; private set; }
         public int CategoryId { get; private set; }
-
         public int SupplierId { get; private set; }
-
         private Product(string name)
         {
             Name = name;
@@ -25,6 +24,7 @@ namespace Inventory.Domain.Entities
             string description,
             decimal price,
             int stock,
+            int stockMin,
             int categoryId,
             int supplierId
             )
@@ -33,6 +33,7 @@ namespace Inventory.Domain.Entities
             Description = description;
             Price = price;
             Stock = stock;
+            StockMin = stockMin;
             CategoryId = categoryId;
             SupplierId = supplierId;
         }
@@ -42,6 +43,7 @@ namespace Inventory.Domain.Entities
             string description,
             decimal price,
             int stock,
+            int stockMin,
             int categoryId,
             int supplierId
         )
@@ -50,9 +52,9 @@ namespace Inventory.Domain.Entities
             Description = description;
             Price = price;
             Stock = stock;
+            StockMin = stockMin;
             CategoryId = categoryId;
+            SupplierId = supplierId;
         }
-
-
     }
 }

@@ -22,6 +22,10 @@ namespace Inventory.Application.Features.Products.Commands.CreateProduct
             RuleFor(x => x.Stock)
                 .GreaterThanOrEqualTo(0);
 
+            RuleFor(x => x.StockMin)
+                .GreaterThanOrEqualTo(0)
+                .WithMessage("Ingrese un stockMin Valido.");
+
             RuleFor(x => x.CategoryId)
                 .GreaterThan(0);
 

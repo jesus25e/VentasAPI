@@ -34,6 +34,7 @@ namespace Inventory.Application.Features.Products.Commands.CreateProduct
                 request.Description,
                 request.Price,
                 request.Stock,
+                request.StockMin,
                 request.CategoryId,
                 request.SupplierId
                 );

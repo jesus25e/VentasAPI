@@ -1,6 +1,7 @@
 ﻿using Inventory.Application.Features.Supplier.Commands.CreateSupplier;
 using Inventory.Application.Features.Supplier.Commands.DeleteSupplier;
 using Inventory.Application.Features.Supplier.Commands.UpdateSupplier;
+using Inventory.Application.Features.Supplier.Queries.GetAllSupplier;
 using Inventory.Application.Features.Supplier.Queries.GetSupplierById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -18,6 +19,16 @@ namespace Inventory.API.Controllers
         public SupplierController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] GetAllSupplierQuery query)
+        {
+            var result = await _mediator.Send(query);
+
+            if (!result.IsSuccess) return BadRequest(result);
+
+            return Ok(result);
         }
 
         [HttpPost]

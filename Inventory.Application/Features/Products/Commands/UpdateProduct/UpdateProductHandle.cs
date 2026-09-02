@@ -42,6 +42,7 @@ namespace Inventory.Application.Features.Products.Commands.UpdateProduct
                 request.Description,
                 request.Price,
                 request.Stock,
+                request.StockMin,
                 request.CategoryId,
                 request.SupplierId
                 );

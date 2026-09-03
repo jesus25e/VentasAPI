@@ -9,11 +9,11 @@ namespace Inventory.Application.Features.Products.Commands.CreateProduct
     public record CreateProductCommand
     (
         string Name,
-        string Description,
+        string? Description,
         decimal Price,
         int Stock,
         int StockMin,
-        int CategoryId,
-        int SupplierId
+        int? CategoryId,
+        int? SupplierId
     ):IRequest<Result<int>>;
 }

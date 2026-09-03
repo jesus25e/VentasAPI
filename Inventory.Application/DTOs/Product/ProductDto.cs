@@ -12,7 +12,7 @@ namespace Inventory.Application.DTOs.Product
         public decimal Price { get; init; }
         public int Stock { get; init; }
         public int StockMin { get; init; }
-        public int SupplierId { get; init; }
-        public int CategoryId { get; init; }
+        public int? SupplierId { get; init; }
+        public int? CategoryId { get; init; }
     }
 }

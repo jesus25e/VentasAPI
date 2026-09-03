@@ -4,6 +4,7 @@ using Inventory.Application.Common.Authorization;
 using Inventory.Infrastructure;
 using Inventory.Infrastructure.Identity.Seed;
 using Inventory.Infrastructure.Persistence;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
@@ -82,6 +83,30 @@ var app = builder.Build();
 //await IdentitySeeder.SeedAsync(app.Services);
 
 app.UseGlobalExceptionMiddleware();
+app.UseExceptionHandler(
+    exceptionHandlerApp =>
+    {
+        exceptionHandlerApp.Run(async context =>
+        {
+            var exceptionHandlerFeature = context.Features.Get<IExceptionHandlerFeature>();
+            var exception = exceptionHandlerFeature?.Error;
+
+            if (exception is FluentValidation.ValidationException validationException)
+            {
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                context.Response.ContentType = "application/json";
+
+                var errors = validationException.Errors
+                    .GroupBy(e => e.PropertyName)
+                    .ToDictionary(
+                        g => g.Key,
+                        g => g.Select(e => e.ErrorMessage).ToArray()
+                    );
+
+                await context.Response.WriteAsJsonAsync(new { status = 400, errors });
+            }
+        });
+    });
 
 if (app.Environment.IsDevelopment())
 {

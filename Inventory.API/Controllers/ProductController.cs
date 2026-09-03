@@ -37,7 +37,7 @@ namespace Inventory.API.Controllers
         {
             var result = await _mediator.Send(command);
 
-            if (!result.IsSuccess) return BadRequest(result);
+            if (!result.IsSuccess) return NotFound(result);
 
             return CreatedAtAction(nameof(GetById),
                 new { id = result.Value }, result);

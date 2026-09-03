@@ -8,7 +8,7 @@ namespace Inventory.Application.Interfaces.Repositories
 {
     public interface IRepository<T> where T: TenantEntity
     {
-        Task<T?> GetByIdAsync(int id);
+        Task<T?> GetByIdAsync(int? id);
         IQueryable<T> AsQueryable();
         Task AddAsync(T entity);
         void Update(T entity);

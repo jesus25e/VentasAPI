@@ -12,8 +12,8 @@ namespace Inventory.Domain.Entities
         public decimal Price { get; private set; }
         public int Stock { get; private set; }
         public int StockMin { get; private set; }
-        public int CategoryId { get; private set; }
-        public int SupplierId { get; private set; }
+        public int? CategoryId { get; private set; }
+        public int? SupplierId { get; private set; }
         private Product(string name)
         {
             Name = name;
@@ -21,12 +21,12 @@ namespace Inventory.Domain.Entities
 
         public Product(
             string name,
-            string description,
+            string? description,
             decimal price,
             int stock,
             int stockMin,
-            int categoryId,
-            int supplierId
+            int? categoryId,
+            int? supplierId
             )
         {
             Name = name;
@@ -40,12 +40,12 @@ namespace Inventory.Domain.Entities
 
         public void Update(
             string name,
-            string description,
+            string? description,
             decimal price,
             int stock,
             int stockMin,
-            int categoryId,
-            int supplierId
+            int? categoryId,
+            int? supplierId
         )
         {
             Name = name;

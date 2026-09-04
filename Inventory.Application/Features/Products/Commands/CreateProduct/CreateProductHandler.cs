@@ -1,12 +1,8 @@
 ﻿using AutoMapper;
 using Inventory.Application.Interfaces.Repositories;
-using Inventory.Application.Mappings;
 using Inventory.Domain.Entities;
 using Inventory.Shared.Result;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Inventory.Application.Features.Products.Commands.CreateProduct
 {

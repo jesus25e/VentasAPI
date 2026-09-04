@@ -10,12 +10,12 @@ namespace Inventory.Application.Features.Products.Commands.UpdateProduct
     (
         int Id,
         string Name,
-        string Description,
+        string? Description,
         decimal Price,
         int Stock,
         int StockMin,
-        int CategoryId,
-        int SupplierId
+        int? CategoryId,
+        int? SupplierId
     ) : IRequest<Result<int>>;
 
 }

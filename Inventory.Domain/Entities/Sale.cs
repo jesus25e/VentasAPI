@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
+using Inventory.Domain.Common;
 
 namespace Inventory.Domain.Entities
 {
-    public class Sale:BaseEntity
+    public class Sale:TenantEntity
     {
-        public decimal Total { get; private set; }
         public DateTime SaleDate { get; private set; }
-        public int CustomerId { get; private set; }
+        public int? CustomerId { get; private set; }
+        public decimal Total { get; private set; }
         private Sale() { }
-        public Sale(decimal total, DateTime saleDate, int customerId)
+        public Sale(decimal total, DateTime saleDate, int? customerId)
         {
-            Total = total;
             SaleDate = saleDate;
             CustomerId = customerId;
+            Total = total;
         }
     }
 }

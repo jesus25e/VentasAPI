@@ -21,6 +21,7 @@ namespace Inventory.Infrastructure.Persistence
         public DbSet<Customer> Customers => Set<Customer>();
         public DbSet<Supplier> Suppliers => Set<Supplier>();
         public DbSet<Sale> Sales => Set<Sale>();
+        public DbSet<SaleDetails> SalesDetails => Set<SaleDetails>();
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
         public DbSet<Tenant> Tenants => Set<Tenant>();
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -39,6 +40,16 @@ namespace Inventory.Infrastructure.Persistence
                     x.TenantId == _currentUserService.TenantId);
 
             modelBuilder.Entity<Category>()
+                .HasQueryFilter(x =>
+                    !x.IsDeleted &&
+                    x.TenantId == _currentUserService.TenantId);
+
+            modelBuilder.Entity<Supplier>()
+                .HasQueryFilter(x => 
+                    !x.IsDeleted &&
+                    x.TenantId == _currentUserService.TenantId);
+
+            modelBuilder.Entity<SaleDetails>()
                 .HasQueryFilter(x =>
                     !x.IsDeleted &&
                     x.TenantId == _currentUserService.TenantId);

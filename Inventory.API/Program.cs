@@ -13,8 +13,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AppAplication();
 builder.Services.AddInfrastructure(builder.Configuration);
-
-//builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 
 builder.Services.AddCors( options =>
@@ -115,6 +113,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseRouting();
 
 app.UseCors("AllowFronted");
 
